@@ -10,3 +10,5 @@
 * Target Identification: Identifies targets by scanning for matching images and calculates the nearest target for gathering.
 * Character Movement: Uses the **Keyboard** library to move the character towards the identified target.
 * Distance Calculation: Determines the distance between the character and the target, initiating resource gathering when in close enough proximity.
+
+**P.S.** This project is not intended for abusive and exploitative purposes. It is just a proof of concept and therefore the effectiveness of the bot is limited.  
