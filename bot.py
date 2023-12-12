@@ -101,7 +101,7 @@ class MovementHandler:
             win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0)
             win32api.keybd_event(key_1, 0, 0, 0)
             win32api.keybd_event(key_2, 0, 0, 0)
-            sleep(0.1)
+            sleep(2)
             win32api.keybd_event(key_1, 0, 0, 0)
             win32api.keybd_event(key_2, 0, 0, 0)
             return
