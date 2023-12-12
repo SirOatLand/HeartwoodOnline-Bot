@@ -86,14 +86,19 @@ class Vision:
     # all of those rectangles drawn
     def draw_rectangles(self, haystack_img, rectangles, closest=None, line_color = (0, 255, 0)):
         # these colors are actually BGR
-        
+        xc, yc, wc, hc = closest
+
         line_type = cv.LINE_4
         for (x, y, w, h) in rectangles:
             # determine the box positions
             top_left = (x, y)
             bottom_right = (x + w, y + h)
             # draw the box
-            cv.rectangle(haystack_img, top_left, bottom_right, line_color, lineType=line_type)
+            if (x, y, w, h) == (xc ,yc, wc, hc):
+                cv.rectangle(haystack_img, top_left, bottom_right, (0,0,255), lineType=line_type)
+                print('red!')
+            else:
+                cv.rectangle(haystack_img, top_left, bottom_right, line_color, lineType=line_type)
 
         return haystack_img
 
