@@ -24,7 +24,7 @@ if __name__ == "__main__":
     # choose needles, hsvfilter, and threshold
     needles = tin_needles
     hsvfilter = hsvfilter_tin
-    threshold = 0.4
+    threshold = 0.5
 
     # load the detector
     bot_detector = Detection(needles, hsvfilter, threshold)
@@ -67,7 +67,7 @@ if __name__ == "__main__":
             obj_x, obj_y, w, h = bot.find_closest()
             bot.move_towards_destination(obj_x, obj_y)
 
-        # print('FPS - {}'.format(1 / (time()-begin_time)))
+        print('FPS - {}'.format(1 / (time()-begin_time)))
         cv.imshow('All Seeing Eye', screenshot)
         key = cv.waitKey(1)
 
