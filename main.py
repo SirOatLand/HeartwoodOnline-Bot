@@ -24,7 +24,7 @@ if __name__ == "__main__":
     # choose needles, hsvfilter, and threshold
     needles = tin_needles
     hsvfilter = hsvfilter_tin
-    threshold = 0.65
+    threshold = 0.4
 
     # load the detector
     bot_detector = Detection(needles, hsvfilter, threshold)
@@ -39,23 +39,35 @@ if __name__ == "__main__":
         begin_time = time()
         bot.update_screen_relative_pos(wincap.get_screen_position((screen_w, screen_h)))
         
-        if wincap.get_screenshot() is not None:
+        try:
             screenshot = wincap.get_screenshot()
-            screenshot = cv.cvtColor(np.array(screenshot), cv.COLOR_RGB2BGR)
+            if screenshot is not None:
+                screenshot = cv.cvtColor(np.array(screenshot), cv.COLOR_RGB2BGR)
+        except Exception as e:
+            print(f"Error converting screenshot: {e}")
+            screenshot = None  # Set screenshot to None in case of conversion error
+            continue  # Skip further processing in case of conversion error
         
-        screenshot = bot_detector.update(screenshot)
-        for rect in bot_detector.rectangles:
-            if rect is not None :
-                if len(rect) > 0 :
-                    bot.update_destination(rect)
-                    screenshot = bot_detector.visions[0].draw_rectangles(bot_detector.screenshot, rect, bot.find_closest())
+        if screenshot is not None:  # Proceed only if screenshot is valid
+            screenshot = bot_detector.update(screenshot)
 
-        print(f"closest - {bot.find_closest()} , dests - {bot.destinations}")
+        temp_rects = []
+        if all(target is None for target in bot_detector.rectangles):
+            bot.clear_destinations()
+            bot.move_any()
+        else:
+            for rect in bot_detector.rectangles:
+                if rect is not None and len(rect) > 0:
+                    temp_rects.extend(rect)
+
+        bot.update_destination(temp_rects)
+        screenshot = bot_detector.visions[0].draw_rectangles(bot_detector.screenshot, temp_rects, bot.find_closest())
+        #print(f"closest - {bot.find_closest()} , dests - {bot.destinations}")
         if bot.find_closest() is not None:
             obj_x, obj_y, w, h = bot.find_closest()
             bot.move_towards_destination(obj_x, obj_y)
 
-        print('FPS - {}'.format(1 / (time()-begin_time)))
+        # print('FPS - {}'.format(1 / (time()-begin_time)))
         cv.imshow('All Seeing Eye', screenshot)
         key = cv.waitKey(1)
 
