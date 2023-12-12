@@ -24,7 +24,7 @@ if __name__ == "__main__":
     # choose needles, hsvfilter, and threshold
     needles = tin_needles
     hsvfilter = hsvfilter_tin
-    threshold = 0.7
+    threshold = 0.65
 
     # load the detector
     bot_detector = Detection(needles, hsvfilter, threshold)
@@ -49,10 +49,8 @@ if __name__ == "__main__":
                 if len(rect) > 0 :
                     bot.update_destination(rect)
                     screenshot = bot_detector.visions[0].draw_rectangles(bot_detector.screenshot, rect, bot.find_closest())
-                else:
-                    bot.clear_destinations()
 
-        print(bot.find_closest())
+        print(f"closest - {bot.find_closest()} , dests - {bot.destinations}")
         if bot.find_closest() is not None:
             obj_x, obj_y, w, h = bot.find_closest()
             bot.move_towards_destination(obj_x, obj_y)

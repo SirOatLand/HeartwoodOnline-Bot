@@ -5,10 +5,17 @@ import cv2 as cv
 import numpy as np
 from time import time, sleep
 import math
+import win32api, win32con
+
+key_a = 0x41
+key_d = 0x44
+key_w = 0x57
+key_s = 0x53
 
 class MovementHandler:
 
     stopped = True
+    found = False
 
     bigscreen = (1920, 1080)
     screen_w = None
@@ -19,7 +26,6 @@ class MovementHandler:
     character_x = None
     character_y = None
 
-    found = False
 
     def __init__(self, screen_w, screen_h):
         self.lock = Lock()
@@ -51,45 +57,45 @@ class MovementHandler:
         key = None
 
         distance_to_target = self.calculate_distance((self.character_x, self.character_y), self.find_closest())
-        print(distance_to_target)
+
         if distance_to_target < 50:
             self.found = True
             click_x, click_y = self.screen_pos
             click_x, click_y = (self.character_x + click_x, self.character_y + click_y + 20)
-            pyautogui.click(click_x, click_y)
+            win32api.SetCursorPos((click_x,click_y))
+            win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0)
             sleep(5)
+            win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0)
             return
         
         self.found = False
-        # if int(distance) == 161:
-        #     # Move Up
-        #     keyboard.press('w')
+
         if not self.found:
             if distance_x >= 10:
                 # Move Right
-                key = 'd'
-                keyboard.press(key)
+                key = key_d
+                win32api.keybd_event(key, 0, 0, 0)
 
             elif distance_x < 10:
                 # Move Left
-                key = 'a'
-                keyboard.press(key)
+                key = key_a
+                win32api.keybd_event(key, 0, 0, 0)
 
             if distance_y >= 10:
                 # Move Down
-                key = 's'
-                keyboard.press(key)
+                key = key_s
+                win32api.keybd_event(key, 0, 0, 0)
 
             elif distance_y < 10:
                 # Move Up
-                key = 'w'
-                keyboard.press(key)
+                key = key_w
+                win32api.keybd_event(key, 0, 0, 0)
         
             sleep(0.1)
-            keyboard.release('a')
-            keyboard.release('d')
-            keyboard.release('s')
-            keyboard.release('w')
+            win32api.keybd_event(key_a, 0, win32con.KEYEVENTF_KEYUP, 0) 
+            win32api.keybd_event(key_d, 0, win32con.KEYEVENTF_KEYUP, 0) 
+            win32api.keybd_event(key_w, 0, win32con.KEYEVENTF_KEYUP, 0) 
+            win32api.keybd_event(key_s, 0, win32con.KEYEVENTF_KEYUP, 0) 
 
     def move_right(self):
         keyboard.press('d')
