@@ -39,7 +39,8 @@ class Vision:
         # if we found no results, return now. this reshape of the empty array allows us to 
         # concatenate together results without causing an error
         if not locations:
-            return np.array([], dtype=np.int32).reshape(0, 4)
+            # return np.array([], dtype=np.int32).reshape(0, 4)
+            return None
 
         # You'll notice a lot of overlapping rectangles get drawn. We can eliminate those redundant
         # locations by using groupRectangles().
@@ -86,7 +87,8 @@ class Vision:
     # all of those rectangles drawn
     def draw_rectangles(self, haystack_img, rectangles, closest=None, line_color = (0, 255, 0)):
         # these colors are actually BGR
-        xc, yc, wc, hc = closest
+        if closest is not None:
+            xc, yc, wc, hc = closest
 
         line_type = cv.LINE_4
         for (x, y, w, h) in rectangles:
