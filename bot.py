@@ -175,12 +175,11 @@ class MovementHandler:
 
     def run(self):
         while not self.stopped:
-            if len(self.destinations) > 0:
-                
-                object_center_x, object_center_y, w, h= self.find_closest()
+            if self.find_closest() is not None:
+                obj_x, obj_y, w, h = self.find_closest()
 
                 self.lock.acquire()
-                self.move_towards_destination(object_center_x, object_center_y)
+                self.move_towards_destination(obj_x, obj_y)
                 self.lock.release()
 
         sleep(1)
