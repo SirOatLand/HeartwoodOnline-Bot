@@ -52,6 +52,7 @@ coverage.xml
 cover/
 test.py
 tempCodeRunnerFile.py
+program.prof
 
 # Translations
 *.mo
