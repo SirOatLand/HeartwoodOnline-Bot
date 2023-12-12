@@ -96,7 +96,6 @@ class Vision:
             # draw the box
             if (x, y, w, h) == (xc ,yc, wc, hc):
                 cv.rectangle(haystack_img, top_left, bottom_right, (0,0,255), lineType=line_type)
-                print('red!')
             else:
                 cv.rectangle(haystack_img, top_left, bottom_right, line_color, lineType=line_type)
 
