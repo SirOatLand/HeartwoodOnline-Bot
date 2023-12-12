@@ -54,10 +54,11 @@ class MovementHandler:
         return distance
     
     def update_screen_relative_pos(self, screen_pos):
+        self.lock.acquire()
         self.screen_pos = screen_pos
+        self.lock.release()
         
     def move_any(self):
-
         # unattack before moving
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0)
 
@@ -82,7 +83,6 @@ class MovementHandler:
         win32api.keybd_event(key_d, 0, win32con.KEYEVENTF_KEYUP, 0) 
         win32api.keybd_event(key_w, 0, win32con.KEYEVENTF_KEYUP, 0) 
         win32api.keybd_event(key_s, 0, win32con.KEYEVENTF_KEYUP, 0) 
-
 
     def move_towards_destination(self, object_center_x, object_center_y):   
         #print(f'Moving to object {object_center_x},{object_center_y}')
@@ -155,6 +155,7 @@ class MovementHandler:
         closest_distance = float('inf')
         closest_coordinate = None
 
+        self.lock.acquire()
         for coord in self.destinations:
             obj_center_x, obj_center_y = self.calculate_center(coord)
             distance = math.sqrt((obj_center_x - self.character_x)**2 + (obj_center_y - self.character_y)**2)
@@ -162,8 +163,10 @@ class MovementHandler:
             if distance < closest_distance:
                 closest_distance = distance
                 closest_coordinate = coord
-        
+
+        self.lock.release()
         return closest_coordinate
+        
 
     def start(self):
         self.stopped = False
@@ -181,5 +184,3 @@ class MovementHandler:
                 self.lock.acquire()
                 self.move_towards_destination(obj_x, obj_y)
                 self.lock.release()
-
-        sleep(1)
