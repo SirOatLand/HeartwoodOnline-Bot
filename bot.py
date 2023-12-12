@@ -11,6 +11,11 @@ key_a = 0x41
 key_d = 0x44
 key_w = 0x57
 key_s = 0x53
+key_1 = 0x31
+key_2 = 0x32
+key_3 = 0x33
+key_4 =	0x34
+key_5 = 0x35
 
 class MovementHandler:
 
@@ -26,6 +31,7 @@ class MovementHandler:
     character_x = None
     character_y = None
 
+    move_anyset = 0
 
     def __init__(self, screen_w, screen_h):
         self.lock = Lock()
@@ -50,6 +56,34 @@ class MovementHandler:
     def update_screen_relative_pos(self, screen_pos):
         self.screen_pos = screen_pos
         
+    def move_any(self):
+
+        # unattack before moving
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0)
+
+        self.move_anyset = (self.move_anyset + 1) % 400
+
+        # Determine movement based on self.move_anyset
+        if self.move_anyset < 100:
+            win32api.keybd_event(key_w, 0, 0, 0)
+            win32api.keybd_event(key_a, 0, 0, 0)
+        elif self.move_anyset < 200:
+            win32api.keybd_event(key_a, 0, 0, 0)
+            win32api.keybd_event(key_s, 0, 0, 0)
+        elif self.move_anyset < 300:
+            win32api.keybd_event(key_s, 0, 0, 0)
+            win32api.keybd_event(key_d, 0, 0, 0)
+        else:
+            win32api.keybd_event(key_d, 0, 0, 0)
+            win32api.keybd_event(key_w, 0, 0, 0)  
+
+        sleep(0.1)
+        win32api.keybd_event(key_a, 0, win32con.KEYEVENTF_KEYUP, 0) 
+        win32api.keybd_event(key_d, 0, win32con.KEYEVENTF_KEYUP, 0) 
+        win32api.keybd_event(key_w, 0, win32con.KEYEVENTF_KEYUP, 0) 
+        win32api.keybd_event(key_s, 0, win32con.KEYEVENTF_KEYUP, 0) 
+
+
     def move_towards_destination(self, object_center_x, object_center_y):   
         #print(f'Moving to object {object_center_x},{object_center_y}')
         distance_x = object_center_x - self.character_x
@@ -57,15 +91,19 @@ class MovementHandler:
         key = None
 
         distance_to_target = self.calculate_distance((self.character_x, self.character_y), self.find_closest())
-
-        if distance_to_target < 50:
+        #print(distance_to_target)
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0)
+        if distance_to_target < 55:
             self.found = True
             click_x, click_y = self.screen_pos
             click_x, click_y = (self.character_x + click_x, self.character_y + click_y + 20)
             win32api.SetCursorPos((click_x,click_y))
             win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0)
-            sleep(5)
-            win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0)
+            win32api.keybd_event(key_1, 0, 0, 0)
+            win32api.keybd_event(key_2, 0, 0, 0)
+            sleep(0.1)
+            win32api.keybd_event(key_1, 0, 0, 0)
+            win32api.keybd_event(key_2, 0, 0, 0)
             return
         
         self.found = False
