@@ -102,8 +102,8 @@ class MovementHandler:
             win32api.keybd_event(key_1, 0, 0, 0)
             win32api.keybd_event(key_2, 0, 0, 0)
             sleep(2)
-            win32api.keybd_event(key_1, 0, 0, 0)
-            win32api.keybd_event(key_2, 0, 0, 0)
+            win32api.keybd_event(key_1, 0, win32con.KEYEVENTF_KEYUP, 0)
+            win32api.keybd_event(key_2, 0, win32con.KEYEVENTF_KEYUP, 0)
             return
         
         self.found = False
