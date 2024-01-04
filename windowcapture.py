@@ -41,23 +41,31 @@ class WindowCapture:
 
             result = windll.user32.PrintWindow(self.hwnd, saveDC.GetSafeHdc(), 3)
 
-            bmpinfo = saveBitMap.GetInfo()
-            bmpstr = saveBitMap.GetBitmapBits(True)
-
-            image = Image.frombuffer(
-                'RGB',
-                (bmpinfo['bmWidth'], bmpinfo['bmHeight']),
-                bmpstr, 'raw', 'BGRX', 0, 1)
-
-            win32gui.DeleteObject(saveBitMap.GetHandle())
-            saveDC.DeleteDC()
-            mfcDC.DeleteDC()
-            win32gui.ReleaseDC(self.hwnd, hwndDC)
-
             if result == 1:
-                # PrintWindow Succeeded
+                bmpinfo = saveBitMap.GetInfo()
+                bmpstr = saveBitMap.GetBitmapBits(True)
+
+                image = Image.frombuffer(
+                    'RGB',
+                    (bmpinfo['bmWidth'], bmpinfo['bmHeight']),
+                    bmpstr, 'raw', 'BGRX', 0, 1)
+
+                # Release resources
+                win32gui.DeleteObject(saveBitMap.GetHandle())
+                saveDC.DeleteDC()
+                mfcDC.DeleteDC()
+                win32gui.ReleaseDC(self.hwnd, hwndDC)
+
                 return image
             else:
+                # PrintWindow failed
+                print("PrintWindow failed.")
+                # Release resources even in failure case
+                win32gui.DeleteObject(saveBitMap.GetHandle())
+                saveDC.DeleteDC()
+                mfcDC.DeleteDC()
+                win32gui.ReleaseDC(self.hwnd, hwndDC)
+
                 return None
         except Exception as e:
             print(f"Exception occurred: {e}")
