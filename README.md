@@ -21,7 +21,7 @@
 
 ## Basic Configurations
 
-#### Unfortunately this project does not include UI for the bot's behavior configuration nor am I planning to, so the editing the code directly is the only way.
+#### Unfortunately this project does not include UI for the bot's behavior configuration nor am I planning to include one, so the editing the code directly is the only way.
 
 ### These are the changes you can make inside main.py
 
