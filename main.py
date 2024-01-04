@@ -4,7 +4,7 @@ from time import time, sleep
 from windowcapture import WindowCapture
 from detection import Detection
 from HsvFilter import HsvFilter
-from bot import MovementHandler
+from bot import OreBot
 from mobbot import MobBot
 
 
@@ -29,8 +29,8 @@ DEBUG = True
 if __name__ == "__main__":
 
     # choose needles, hsvfilter, and threshold
-    needles = hp_needles
-    hsvfilter = hsvfilter_none
+    needles = coal_needles
+    hsvfilter = hsvfilter_coal
     threshold = 0.6
 
     # load the detector
