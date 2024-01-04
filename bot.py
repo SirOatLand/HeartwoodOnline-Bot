@@ -17,7 +17,7 @@ key_3 = 0x33
 key_4 =	0x34
 key_5 = 0x35
 
-class MovementHandler:
+class OreBot:
 
     stopped = True
     found = False
@@ -84,7 +84,7 @@ class MovementHandler:
         win32api.keybd_event(key_w, 0, win32con.KEYEVENTF_KEYUP, 0) 
         win32api.keybd_event(key_s, 0, win32con.KEYEVENTF_KEYUP, 0) 
 
-    def move_towards_destination(self, object_center_x, object_center_y):   
+    def attack_towards_destination(self, object_center_x, object_center_y):   
         #print(f'Moving to object {object_center_x},{object_center_y}')
         distance_x = object_center_x - self.character_x
         distance_y = object_center_y - self.character_y
