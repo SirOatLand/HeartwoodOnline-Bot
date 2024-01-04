@@ -18,11 +18,10 @@
 * Run the game in 1024x768 resolution.
 * With the game running, executes main.py.
 * A window of the program's vision should popup and your keyboard and/or mouse will be controlled.
-* To terminate the program, select the vision window and press 'q' within the program delays.
 
 ## Basic Configurations
 
-#### Unfortunately this project does not include UI for the bot's behavior configuration nor am I planning to include one, so the editing the code directly is the only way.
+#### Unfortunately this project does not include UI for the bot's behavior configuration nor am I planning to, so the editing the code directly is the only way.
 
 ### These are the changes you can make inside main.py
 
@@ -33,5 +32,6 @@
     * hp_needles (for mob detections)
 * hsvfilter - This is a filter that makes the detection more accurate and the needle and hsv selected should match. For example, "needles = coal_needles" then "hsvfilter = hsvfilter_coal". (for mob detection use hsvfilter_none)
 * threshold - This is the change to the how accurate the detected object should match the needle to be recognized. Try increasing this value if unrelated objects are being detected, or decrease it if targeted objects are not being recognized.
+* bot - There are two classes used separately for ore-detection which is OreBot(), and MobBot() for mob-detection, change them accordingly to other connfigurations.
 
 #### NOTE - To use a mob detector, equip a range weapon and stands in the middle of the spawning area (preferably but not mandatory somewhere with an object on top of your head such as ores or trees, to prevent mob from hiding behind your own health bar and become undetectable).    
