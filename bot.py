@@ -41,8 +41,8 @@ class MovementHandler:
         self.character_y = self.screen_h // 2
 
     def calculate_center(self, obj):
-        obj_center_x = obj[0] + (obj[2] / 2 if len(obj) > 2 else 0)  # Calculate object center x if obj[2] exists
-        obj_center_y = obj[1] + (obj[3] / 2 if len(obj) > 3 else 0)  # Calculate 
+        obj_center_x = obj[0] + (obj[2] // 2 if len(obj) > 2 else 0)  # Calculate object center x if obj[2] exists
+        obj_center_y = obj[1] + (obj[3] // 2 if len(obj) > 3 else 0)  # Calculate 
 
         return (obj_center_x, obj_center_y)
 
