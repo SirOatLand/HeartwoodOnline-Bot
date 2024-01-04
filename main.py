@@ -5,12 +5,19 @@ from windowcapture import WindowCapture
 from detection import Detection
 from HsvFilter import HsvFilter
 from bot import MovementHandler
+from mobbot import MobBot
 
 
 coal_needles = ['./assets/big_coal1_hsv.jpg', './assets/big_coal2_hsv.jpg', './assets/big_coal3_hsv.jpg']
 tin_needles = ['./assets/big_tin1_hsv.jpg', './assets/big_tin2_hsv.jpg']
+copper_needles = ['./assets/big_copper1_hsv.jpg', './assets/big_copper2_hsv.jpg']
+deer_needles = ['./assets/deerFront_hsv.jpg', './assets/deerBack_hsv.jpg', './assets/deerLeft_hsv.jpg', './assets/deerRight_hsv.jpg']
+hp_needles = ['./assets/healthbar.jpg','./assets/healthbar1_3.jpg']
 hsvfilter_coal = HsvFilter(0, 141, 123, 15, 236, 251, 145, 0, 147, 0)
 hsvfilter_tin = HsvFilter(11, 0, 0, 98, 255, 132, 255, 0, 62, 14)
+hsvfilter_copper = HsvFilter(7, 0, 125, 15, 255, 255, 0, 83, 135, 11)
+hsvfilter_deer = HsvFilter(5, 102, 41, 34, 255, 170, 8, 0, 69, 54)
+hsvfilter_none = HsvFilter(0, 0, 0, 179, 255, 255, 0, 0, 0, 0)
 
 # initialize the WindowCapture class
 screen_w = 1024
@@ -22,15 +29,15 @@ DEBUG = True
 if __name__ == "__main__":
 
     # choose needles, hsvfilter, and threshold
-    needles = tin_needles
-    hsvfilter = hsvfilter_tin
-    threshold = 0.5
+    needles = hp_needles
+    hsvfilter = hsvfilter_none
+    threshold = 0.6
 
     # load the detector
     bot_detector = Detection(needles, hsvfilter, threshold)
 
     # initialize bot class
-    bot = MovementHandler(screen_w, screen_h)
+    bot = MobBot(screen_w, screen_h)
 
     wincap.start()
     bot_detector.start()
@@ -54,7 +61,6 @@ if __name__ == "__main__":
         temp_rects = []
         if all(target is None for target in bot_detector.rectangles):
             bot.clear_destinations()
-            bot.move_any()
         else:
             for rect in bot_detector.rectangles:
                 if rect is not None and len(rect) > 0:
@@ -64,10 +70,12 @@ if __name__ == "__main__":
         screenshot = bot_detector.visions[0].draw_rectangles(bot_detector.screenshot, temp_rects, bot.find_closest())
         #print(f"closest - {bot.find_closest()} , dests - {bot.destinations}")
         if bot.find_closest() is not None:
-            obj_x, obj_y, w, h = bot.find_closest()
-            bot.move_towards_destination(obj_x, obj_y)
+            object_center_x, object_center_y = bot.calculate_center(bot.find_closest())
+            bot.attack_towards_destination(object_center_x, object_center_y)
 
-        print('FPS - {}'.format(1 / (time()-begin_time)))
+        time_diff = time()-begin_time
+        # if time_diff != 0:
+        #     print('FPS - {}'.format(1 / time_diff))
         cv.imshow('All Seeing Eye', screenshot)
         key = cv.waitKey(1)
 
@@ -77,5 +85,5 @@ if __name__ == "__main__":
             bot.stop()
             cv.destroyAllWindows()
             break
-
+        sleep(1)
     print('Done.')
