@@ -18,6 +18,7 @@
 * Run the game in 1024x768 resolution.
 * With the game running, executes main.py.
 * A window of the program's vision should popup and your keyboard and/or mouse will be controlled.
+* To terminate the program, select the vision window and press 'q' within the program delays.
 
 ## Basic Configurations
 
