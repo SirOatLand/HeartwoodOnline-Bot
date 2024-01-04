@@ -37,7 +37,7 @@ if __name__ == "__main__":
     bot_detector = Detection(needles, hsvfilter, threshold)
 
     # initialize bot class
-    bot = MobBot(screen_w, screen_h)
+    bot = OreBot(screen_w, screen_h)
 
     wincap.start()
     bot_detector.start()
