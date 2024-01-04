@@ -74,7 +74,7 @@ if __name__ == "__main__":
             bot.attack_towards_destination(object_center_x, object_center_y)
 
         time_diff = time()-begin_time
-         if time_diff != 0:
+        if time_diff != 0:
              print('FPS - {}'.format(1 / time_diff))
         cv.imshow('All Seeing Eye', screenshot)
         key = cv.waitKey(1)
